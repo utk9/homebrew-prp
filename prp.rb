@@ -4,14 +4,18 @@
 
 class Prp < Formula
   desc "prp (Print Relative Path) command, written in Go"
-  homepage ""
+  homepage "github.com/utk9/prp" 
   url "https://github.com/utk9/prp/archive/v1.0.tar.gz"
   sha256 "e90d4b8c3df7aacf19c9168b005d5952325a4f87a8ae01e427765e0148575d0c"
 
-  # depends_on "cmake" => :build
+  depends_on "go" => :build
 
   def install
-	system "go install prp.go"
+    ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/utk9"
+    ln_s buildpath, buildpath/"src/github.com/utk9/prp"
+    system "go", "build", "-o", "prp", "."
+    bin.install "prp"
   end
 
 end
